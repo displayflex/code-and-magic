@@ -11,7 +11,7 @@ var BAR_CHART_WIDTH = 40;
 var BAR_CHART_OFFSET = 50;
 var GRAPH_HEIGHT = 150;
 
-function drawBackground(ctx, x, y, width, height) {
+var drawBackground = function (ctx, x, y, width, height) {
 	var offsetX = 20;
 	var offsetY = 10;
 
@@ -28,9 +28,9 @@ function drawBackground(ctx, x, y, width, height) {
 	ctx.closePath();
 	ctx.stroke();
 	ctx.fill();
-}
+};
 
-function getMaxElement(array) {
+var getMaxElement = function (array) {
 	var maxValue = 0;
 
 	for (var i = 0; i < array.length; i += 1) {
@@ -40,7 +40,7 @@ function getMaxElement(array) {
 	}
 
 	return maxValue;
-}
+};
 
 window.renderStatistics = function (ctx, names, times) {
 	var graphX = 155;
