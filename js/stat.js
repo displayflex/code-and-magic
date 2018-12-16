@@ -4,6 +4,8 @@ var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
 var CLOUD_X = 100;
 var CLOUD_Y = 10;
+var CLOUD_COLOR = '#fff';
+var SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)';
 var SHADOW_OFFSET = 10;
 var FONT = '16px PT Mono';
 var FONT_COLOR = '#000';
@@ -11,10 +13,12 @@ var BAR_CHART_WIDTH = 40;
 var BAR_CHART_OFFSET = 50;
 var GRAPH_HEIGHT = 150;
 
-var drawBackground = function (ctx, x, y, width, height) {
+var drawBackground = function (ctx, x, y, width, height, color) {
 	var offsetX = 20;
 	var offsetY = 10;
 
+	ctx.fillStyle = color;
+	ctx.strokeStyle = color;
 	ctx.beginPath();
 	ctx.moveTo(x, y);
 	ctx.lineTo(x + width / 2 + offsetY, y + offsetY);
@@ -53,13 +57,8 @@ window.renderStatistics = function (ctx, names, times) {
 	var time;
 	var maxTime = getMaxElement(times);
 
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-	ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
-	drawBackground(ctx, CLOUD_X + SHADOW_OFFSET, CLOUD_Y + SHADOW_OFFSET, CLOUD_WIDTH, CLOUD_HEIGHT);
-
-	ctx.fillStyle = '#fff';
-	ctx.strokeStyle = '#fff';
-	drawBackground(ctx, CLOUD_X, CLOUD_Y, CLOUD_WIDTH, CLOUD_HEIGHT);
+	drawBackground(ctx, CLOUD_X + SHADOW_OFFSET, CLOUD_Y + SHADOW_OFFSET, CLOUD_WIDTH, CLOUD_HEIGHT, SHADOW_COLOR);
+	drawBackground(ctx, CLOUD_X, CLOUD_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_COLOR);
 
 	ctx.fillStyle = FONT_COLOR;
 	ctx.font = FONT;
