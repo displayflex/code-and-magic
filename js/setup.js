@@ -8,6 +8,8 @@ var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var WIZARD_COUNT = 4;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
+var USER_DIALOG_INITIAL_TOP = '80px';
+var USER_DIALOG_INITIAL_LEFT = '50%';
 
 var userDialog = document.querySelector('.setup');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
@@ -24,6 +26,7 @@ var wizardCoatInput = userDialog.querySelector('input[name=coat-color]');
 var wizardEyesInput = userDialog.querySelector('input[name=eyes-color]');
 var fireballInput = fireball.querySelector('input[name=fireball-color]');
 var userNameInput = userDialog.querySelector('.setup-user-name');
+var dialogHandler = userDialog.querySelector('.upload');
 
 var getRandomElement = function (array) {
 	return array[Math.floor(Math.random() * array.length)];
@@ -114,6 +117,8 @@ var userNameInputInvalidHandler = function () {
 };
 
 var openPopup = function () {
+	userDialog.style.left = USER_DIALOG_INITIAL_LEFT;
+	userDialog.style.top = USER_DIALOG_INITIAL_TOP;
 	userDialog.querySelector('.setup-similar').classList.remove('hidden');
 	userDialog.classList.remove('hidden');
 	document.addEventListener('keydown', popupEscPressHandler);
@@ -151,3 +156,54 @@ userNameInput.addEventListener('invalid', userNameInputInvalidHandler);
 wizardCoat.addEventListener('click', wizardCoatClickHandler);
 wizardEyes.addEventListener('click', wizardEyesClickHandler);
 fireball.addEventListener('click', fireballClickHandler);
+
+var setupUserPicMouseDownHandler = function (evt) {
+	evt.preventDefault();
+
+	var dragged = false;
+
+	var startCoords = {
+		x: evt.clientX,
+		y: evt.clientY
+	};
+
+	var mouseMoveHandler = function (moveEvt) {
+		moveEvt.preventDefault();
+
+		dragged = true;
+
+		var shift = {
+			x: startCoords.x - moveEvt.clientX,
+			y: startCoords.y - moveEvt.clientY,
+		};
+
+		startCoords = {
+			x: moveEvt.clientX,
+			y: moveEvt.clientY,
+		};
+
+		userDialog.style.left = (userDialog.offsetLeft - shift.x) + 'px';
+		userDialog.style.top = (userDialog.offsetTop - shift.y) + 'px';
+	};
+
+	var mouseUpHandler = function (upEvt) {
+		upEvt.preventDefault();
+
+		document.removeEventListener('mousemove', mouseMoveHandler);
+		document.removeEventListener('mouseup', mouseUpHandler);
+
+		if (dragged) {
+			var clickPreventDefaultHandler = function (dragEvt) {
+				dragEvt.preventDefault();
+				dialogHandler.removeEventListener('click', clickPreventDefaultHandler);
+			};
+
+			dialogHandler.addEventListener('click', clickPreventDefaultHandler);
+		}
+	};
+
+	document.addEventListener('mousemove', mouseMoveHandler);
+	document.addEventListener('mouseup', mouseUpHandler);
+};
+
+dialogHandler.addEventListener('mousedown', setupUserPicMouseDownHandler);
