@@ -7,7 +7,6 @@
 	var userDialog = document.querySelector('.setup');
 	var setupOpen = document.querySelector('.setup-open');
 	var setupClose = userDialog.querySelector('.setup-close');
-	var userNameInput = userDialog.querySelector('.setup-user-name');
 	var dialogHandle = userDialog.querySelector('.upload');
 
 	var popupEscPressHandler = function (evt) {
@@ -44,18 +43,6 @@
 	setupClose.addEventListener('keydown', function (evt) {
 		window.util.isEnterEvent(evt, closePopup);
 	});
-
-	var userNameInputInvalidHandler = function () {
-		if (userNameInput.validity.tooShort) {
-			userNameInput.setCustomValidity('Имя должно состоять из 2-х символов');
-		} else if (userNameInput.validity.tooLong) {
-			userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов');
-		} else if (userNameInput.validity.valueMissing) {
-			userNameInput.setCustomValidity('Обязательное поле');
-		} else {
-			userNameInput.setCustomValidity('');
-		}
-	};
 
 	var setupUserPicMouseDownHandler = function (evt) {
 		evt.preventDefault();
@@ -106,6 +93,9 @@
 		document.addEventListener('mouseup', mouseUpHandler);
 	};
 
-	userNameInput.addEventListener('invalid', userNameInputInvalidHandler);
 	dialogHandle.addEventListener('mousedown', setupUserPicMouseDownHandler);
+
+	window.dialog = {
+		close: closePopup
+	};
 })();
