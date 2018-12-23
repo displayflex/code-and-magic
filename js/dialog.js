@@ -1,8 +1,10 @@
 'use strict';
 
 (function () {
-	var USER_DIALOG_INITIAL_TOP = '80px';
-	var USER_DIALOG_INITIAL_LEFT = '50%';
+	var UserDialogInitial = {
+		TOP: '80px',
+		LEFT: '50%'
+	};
 
 	var userDialog = document.querySelector('.setup');
 	var setupOpen = document.querySelector('.setup-open');
@@ -16,8 +18,8 @@
 	};
 
 	var openPopup = function () {
-		userDialog.style.left = USER_DIALOG_INITIAL_LEFT;
-		userDialog.style.top = USER_DIALOG_INITIAL_TOP;
+		userDialog.style.left = UserDialogInitial.LEFT;
+		userDialog.style.top = UserDialogInitial.TOP;
 		userDialog.querySelector('.setup-similar').classList.remove('hidden');
 		userDialog.classList.remove('hidden');
 		document.addEventListener('keydown', popupEscPressHandler);
