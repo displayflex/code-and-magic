@@ -11,22 +11,54 @@
 	var fireballInput = fireball.querySelector('input[name=fireball-color]');
 	var userNameInput = setupForm.querySelector('.setup-user-name');
 
-	var wizardCoatClickHandler = function () {
-		var color = window.colorize.getCoatColor();
+	var wizard = {
+		coatChangeHandler: function (color) {
+			return color;
+		},
+
+		eyesChangeHandler: function (color) {
+			return color;
+		},
+
+		fireballChangeHandler: function (color) {
+			return color;
+		}
+	};
+
+	var setCoat = function (color) {
 		wizardCoat.style.fill = color;
 		wizardCoatInput.value = color;
+		wizard.coatChangeHandler(color);
+	};
+
+	var setEyes = function (color) {
+		wizardEyes.style.fill = color;
+		wizardEyesInput.value = color;
+		wizard.eyesChangeHandler(color);
+	};
+
+	var setFireball = function (color) {
+		fireball.style.backgroundColor = color;
+		fireballInput.value = color;
+		wizard.fireballChangeHandler(color);
+	};
+
+	var setWizardInitialValues = function () {
+		setCoat(window.colorize.getCoatInitialColor());
+		setEyes(window.colorize.getEyesInitialColor());
+		setFireball(window.colorize.getFireballInitialColor());
+	};
+
+	var wizardCoatClickHandler = function () {
+		setCoat(window.colorize.getCoatColor());
 	};
 
 	var wizardEyesClickHandler = function () {
-		var color = window.colorize.getEyesColor();
-		wizardEyes.style.fill = color;
-		wizardEyesInput.value = color;
+		setEyes(window.colorize.getEyesColor());
 	};
 
 	var fireballClickHandler = function () {
-		var color = window.colorize.getFireballColor();
-		fireball.style.backgroundColor = color;
-		fireballInput.value = color;
+		setFireball(window.colorize.getFireballColor());
 	};
 
 	var userNameInputInvalidHandler = function () {
@@ -59,4 +91,9 @@
 	fireball.addEventListener('click', fireballClickHandler);
 	userNameInput.addEventListener('invalid', userNameInputInvalidHandler);
 	setupForm.addEventListener('submit', setupFormSubmitHandler);
+
+	window.setup = {
+		wizard: wizard,
+		setWizardInitialValues: setWizardInitialValues
+	};
 })();

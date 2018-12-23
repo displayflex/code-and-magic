@@ -1,36 +1,76 @@
 'use strict';
 
 (function () {
-	var WIZARD_COUNT = 4;
+	var wizards = [];
 
-	var similarListElement = document.querySelector('.setup-similar-list');
-	var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-		.content
-		.querySelector('.setup-similar-item');
+	var coatColor;
+	var eyesColor;
+	var fireballColor;
 
-	var renderWizard = function (wizard) {
-		var wizardElement = similarWizardTemplate.cloneNode(true);
-
-		wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-		wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
-		wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
-
-		return wizardElement;
+	window.setup.wizard.coatChangeHandler = function (color) {
+		coatColor = color;
+		window.debounce(updateWizards);
 	};
 
-	var renderSimilarWizards = function (wizards) {
-		var randomWizards = window.random.getSomeRandomElemets(wizards, WIZARD_COUNT);
-		var fragment = document.createDocumentFragment();
+	window.setup.wizard.eyesChangeHandler = function (color) {
+		eyesColor = color;
+		window.debounce(updateWizards);
+	};
 
-		for (var i = 0; i < WIZARD_COUNT; i++) {
-			fragment.appendChild(renderWizard(randomWizards[i]));
+	window.setup.wizard.fireballChangeHandler = function (color) {
+		fireballColor = color;
+		window.debounce(updateWizards);
+	};
+
+	var getRank = function (wizard) {
+		var rank = 0;
+
+		if (wizard.colorCoat === coatColor && wizard.colorEyes === eyesColor) {
+			rank += 3;
 		}
 
-		similarListElement.appendChild(fragment);
+		if (wizard.colorCoat === coatColor) {
+			rank += 2;
+		}
+
+		if (wizard.colorEyes === eyesColor) {
+			rank += 1;
+		}
+
+		if (wizard.colorFireball === fireballColor) {
+			rank += 0.5;
+		}
+
+		return rank;
 	};
 
-	var loadSuccessHandler = function (wizards) {
-		renderSimilarWizards(wizards);
+	var compareNames = function (left, right) {
+		if (left > right) {
+			return 1;
+		} else if (left < right) {
+			return -1;
+		} else {
+			return 0;
+		}
+	};
+
+	var updateWizards = function () {
+		wizards.sort(function (left, right) {
+			var rankDiff = getRank(right) - getRank(left);
+			if (rankDiff === 0) {
+				rankDiff = compareNames(left.name, right.name);
+			}
+
+			return rankDiff;
+		});
+
+		window.render.renderSimilarWizards(wizards);
+	};
+
+	var loadSuccessHandler = function (data) {
+		wizards = data;
+		window.setup.setWizardInitialValues();
+		updateWizards();
 	};
 
 	var loadErrorHandler = function (errorMessage) {

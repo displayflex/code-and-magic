@@ -8,16 +8,33 @@
 	var getCoatColor = function () {
 		return window.random.getRandomElement(COAT_COLORS);
 	};
+
 	var getEyesColor = function () {
 		return window.random.getRandomElement(EYES_COLORS);
 	};
+
 	var getFireballColor = function () {
 		return window.random.getRandomElement(FIREBALL_COLORS);
+	};
+
+	var getCoatInitialColor = function () {
+		return COAT_COLORS[0];
+	};
+
+	var getEyesInitialColor = function () {
+		return EYES_COLORS[0];
+	};
+
+	var getFireballInitialColor = function () {
+		return FIREBALL_COLORS[0];
 	};
 
 	window.colorize = {
 		getCoatColor: getCoatColor,
 		getEyesColor: getEyesColor,
-		getFireballColor: getFireballColor
+		getFireballColor: getFireballColor,
+		getCoatInitialColor: getCoatInitialColor,
+		getEyesInitialColor: getEyesInitialColor,
+		getFireballInitialColor: getFireballInitialColor
 	};
 })();
